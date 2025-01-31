@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Walentynka</title>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #ff69b4, #ff1493, #ff69b4, #ff8da1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .question {
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 5s linear infinite, bounce 2s ease-in-out infinite;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .question::after {
+            content: '💫';
+            position: absolute;
+            right: -40px;
+            top: 0;
+            animation: spin 3s linear infinite;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            z-index: 2;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        button:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 30px rgba(255,255,255,0.7);
+        }
+        
+        #yesBtn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        #noBtn {
+            background: linear-gradient(45deg, #cccccc, #999999);
+            color: black;
+        }
+        
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            display: none;
+            text-align: center;
+            z-index: 3;
+            animation: popIn 0.5s forwards;
+        }
+        
+        .heart {
+            color: red;
+            font-size: 60px;
+            margin-top: 10px;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 20, 147, 0.3);
+            animation: float 6s linear infinite;
+        }
+
+        .sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+        }
+
+        .butterfly {
+            position: absolute;
+            font-size: 20px;
+            animation: flyAround 20s linear infinite;
+            z-index: 1;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 4s linear infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.4); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, -100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--translateX), 100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes flyAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100vw, 50vh) rotate(90deg);
+            }
+            50% {
+                transform: translate(50vw, 100vh) rotate(180deg);
+            }
+            75% {
+                transform: translate(0, 50vh) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            70% { transform: translate(-50%, -50%) scale(0.9); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container"></div>
+    <div class="question">Zostaniesz moją Walentynką Gwiazdko?</div>
+    
+    <div class="buttons">
+        <button id="yesBtn">Tak</button>
+        <button id="noBtn">Nie</button>
+    </div>
+    
+    <div id="lovePopup" class="popup">
+        <h2>Kocham Cię najbardziej na świecie</h2>
+        <div class="heart">❤️</div>
+    </div>
+    
+    <div id="sadPopup" class="popup">
+        <h2>:(</h2>
+    </div>
+
+    <script>
+        // Tworzenie motyli
+        function createButterfly() {
+            const butterfly = document.createElement('div');
+            butterfly.innerHTML = '🦋';
+            butterfly.className = 'butterfly';
+            butterfly.style.left = Math.random() * 100 + 'vw';
+            butterfly.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(butterfly);
+
+            setTimeout(() => butterfly.remove(), 20000);
+        }
+
+        // Tworzenie spadających serduszek
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'floating-heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.setProperty('--translateX', (Math.random() * 200 - 100) + 'px');
+            document.querySelector('.hearts-container').appendChild(heart);
+
+            heart.addEventListener('animationend', () => heart.remove());
+        }
+
+        // Tworzenie błyszczących gwiazdek
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.width = sparkle.style.height = Math.random() * 4 + 2 + 'px';
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => sparkle.remove(), 1500);
+        }
+
+        // Tworzenie konfetti
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 4000);
+        }
+
+        // Generowanie efektów w tle
+        setInterval(createHeart, 300);
+        setInterval(createSparkle, 200);
+        setInterval(createButterfly, 5000);
+
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            const popup = document.getElementById('lovePopup');
+            popup.style.display = 'block';
+            
+            // Eksplozja efektów
+            for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHeart();
+                    createConfetti();
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
+        });
+        
+        document.getElementById('noBtn').addEventListener('mouseover', function(e) {
+            const maxX = window.innerWidth - this.offsetWidth;
+            const maxY = window.innerHeight - this.offsetHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            this.style.position = 'fixed';
+            this.style.left = randomX + 'px';
+            this.style.top = randomY + 'px';
+            this.style.transition = 'all 0.2s ease';
+        });
+
+        document.getElementById('sadPopup').addEventListener('click', function() {
+            this.style.display = 'none';
+        });
+
+        // Początkowa generacja efektów
+        for(let i = 0; i < 10; i++) {
+            createButterfly();
+        }
+    </script>
+</body>
+</html>
