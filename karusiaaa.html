@@ -2,180 +2,246 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Walentynka</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: fixed;
-        }
-
         body {
-            background: #FF1493;
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .main-container {
-            width: 100%;
-            height: 100%;
+            background-color: pink;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: #FF1493;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
         }
         
         .question {
-            color: yellow;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 2.5em;
+            margin-bottom: 30px;
             text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 300px;
-            position: relative;
-            word-wrap: break-word;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 5s linear infinite;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
         .buttons {
             display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
+            gap: 20px;
+            z-index: 2;
         }
         
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 1.2em;
             cursor: pointer;
             border: none;
-            border-radius: 5px;
-            background: white;
-            color: #FF1493;
-            min-width: 60px;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
+            border-radius: 10px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
-        button:active {
-            transform: scale(0.95);
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
-
-        .sparkle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
+        
+        #yesBtn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
         }
-
+        
+        #noBtn {
+            background: linear-gradient(45deg, #cccccc, #999999);
+            color: black;
+        }
+        
         .popup {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255,255,255,0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
             display: none;
             text-align: center;
-            z-index: 1000;
-            width: 80%;
-            max-width: 250px;
+            z-index: 3;
+            animation: popIn 0.5s forwards;
+        }
+        
+        .heart {
+            color: red;
+            font-size: 50px;
+            margin-top: 10px;
+            animation: pulse 1s infinite;
+        }
+
+        /* Spadające serduszka */
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 20, 147, 0.3);
+            animation: float 6s linear infinite;
+            z-index: 1;
+        }
+
+        /* Błyszczące gwiazdki */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         @keyframes twinkle {
-            0%, 100% { opacity: 0; }
+            0% { opacity: 0; }
             50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Efekt tła z gradientem */
+        .background-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: backgroundPulse 4s infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundPulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="question">Zostaniesz moją Walentynką Gwiazdko? 💫</div>
-        <div class="buttons">
-            <button id="yesBtn">Tak</button>
-            <button id="noBtn">Nie</button>
-        </div>
+    <div class="background-effect"></div>
+    <div class="question">Zostaniesz moją Walentynką Gwiazdko? 💫</div>
+    
+    <div class="buttons">
+        <button id="yesBtn">Tak</button>
+        <button id="noBtn">Nie</button>
     </div>
-
+    
     <div id="lovePopup" class="popup">
         <h2>Kocham Cię najbardziej na świecie</h2>
-        <div style="font-size: 40px; margin-top: 10px;">❤️</div>
+        <div class="heart">❤️</div>
     </div>
-
+    
     <div id="sadPopup" class="popup">
         <h2>:(</h2>
     </div>
 
     <script>
+        // Tworzenie spadających serduszek
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'floating-heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(heart);
+
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        // Tworzenie błyszczących gwiazdek
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
-            sparkle.style.left = Math.random() * window.innerWidth + 'px';
-            sparkle.style.top = Math.random() * window.innerHeight + 'px';
-            sparkle.style.animation = 'twinkle 1.5s infinite';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
             document.body.appendChild(sparkle);
 
-            setTimeout(() => sparkle.remove(), 1500);
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1500);
         }
 
-        setInterval(createSparkle, 300);
+        // Generowanie efektów w tle
+        setInterval(createHeart, 300);
+        setInterval(createSparkle, 200);
 
         document.getElementById('yesBtn').addEventListener('click', function() {
             const popup = document.getElementById('lovePopup');
             popup.style.display = 'block';
+            popup.style.transform = 'translate(-50%, -50%) scale(0)';
             
+            // Dodatkowe serduszka przy kliknięciu "Tak"
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+
             setTimeout(() => {
                 popup.style.display = 'none';
             }, 3000);
         });
         
+        document.getElementById('noBtn').addEventListener('click', function() {
+            const popup = document.getElementById('sadPopup');
+            popup.style.display = 'block';
+            popup.style.transform = 'translate(-50%, -50%) scale(0)';
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
+        });
+
+        // Efekt uniku przycisku "Nie"
         const noBtn = document.getElementById('noBtn');
-        
-        function moveButton(button, event) {
-            const maxX = window.innerWidth - button.offsetWidth - 20;
-            const maxY = window.innerHeight - button.offsetHeight - 20;
-            
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-            
-            button.style.position = 'fixed';
-            button.style.left = randomX + 'px';
-            button.style.top = randomY + 'px';
-        }
-
-        noBtn.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            moveButton(this, e);
-        });
-
         noBtn.addEventListener('mouseover', function(e) {
-            moveButton(this, e);
-        });
-
-        document.querySelectorAll('.popup').forEach(popup => {
-            popup.addEventListener('click', function() {
-                this.style.display = 'none';
-            });
+            const x = Math.random() * (window.innerWidth - this.offsetWidth);
+            const y = Math.random() * (window.innerHeight - this.offsetHeight);
+            
+            if(Math.random() > 0.5) { // 50% szans na ucieczkę
+                this.style.position = 'fixed';
+                this.style.left = x + 'px';
+                this.style.top = y + 'px';
+            }
         });
     </script>
 </body>
